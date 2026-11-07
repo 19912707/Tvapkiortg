@@ -1,0 +1,6 @@
+{
+  "name": "Fire TV",
+  "description": "Amazon Firestick OS Smart TV UI with Hero Spotlight, spatial D-Pad navigation, and video player",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

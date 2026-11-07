@@ -1,0 +1,979 @@
+/* ==========================================================================
+   Amazon Firestick (Fire OS) - Smart TV User Experience Stylesheet
+   Color Palette:
+     - Base Dark: #0c1017 / #0f172a
+     - Amazon Fire Orange: #ff9900
+     - Electric Soft Blue: #00a8e1
+     - Focus Glow: rgba(255, 153, 0, 0.5)
+   ========================================================================== */
+
+:root {
+  --bg-deep: #0c1017;
+  --bg-surface: #141b26;
+  --bg-surface-elevated: #1e2837;
+  --accent-orange: #ff9900;
+  --accent-orange-hover: #ffad33;
+  --accent-blue: #00a8e1;
+  --accent-blue-subtle: rgba(0, 168, 225, 0.18);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --focus-glow: 0 8px 24px rgba(255, 153, 0, 0.45);
+  --sidebar-collapsed: 72px;
+  --sidebar-expanded: 230px;
+  --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-family: 'Amazon Ember', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: var(--bg-deep);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   1. COLLAPSIBLE SIDEBAR NAVIGATION (Fire TV style)
+   ========================================================================== */
+
+#sidebar-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-collapsed);
+  background: linear-gradient(180deg, rgba(12, 16, 23, 0.96) 0%, rgba(15, 23, 42, 0.94) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 0;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+#sidebar-nav.expanded,
+#sidebar-nav:hover,
+#sidebar-nav:focus-within {
+  width: var(--sidebar-expanded);
+  box-shadow: 12px 0 36px rgba(0, 0, 0, 0.75);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 48px;
+  gap: 14px;
+}
+
+.firetv-logo-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent-orange), #e65100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.35);
+}
+
+.firetv-logo-badge svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: #ffffff;
+}
+
+.logo-text span {
+  color: var(--accent-orange);
+}
+
+#sidebar-nav.expanded .logo-text,
+#sidebar-nav:hover .logo-text,
+#sidebar-nav:focus-within .logo-text {
+  opacity: 1;
+}
+
+.nav-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0 10px;
+}
+
+.nav-item-btn {
+  width: 100%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 23px;
+  background: transparent;
+  border: 2px solid transparent;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.nav-item-btn .nav-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 18px;
+  fill: currentColor;
+}
+
+.nav-item-btn .nav-label {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#sidebar-nav.expanded .nav-label,
+#sidebar-nav:hover .nav-label,
+#sidebar-nav:focus-within .nav-label {
+  opacity: 1;
+}
+
+.nav-item-btn.active {
+  color: var(--accent-orange);
+}
+
+.nav-item-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 4px;
+  background: var(--accent-orange);
+}
+
+/* Sidebar button TV FOCUS state */
+.nav-item-btn:focus,
+.nav-item-btn.focused {
+  background: rgba(255, 153, 0, 0.15);
+  border-color: var(--accent-orange);
+  color: #ffffff;
+  transform: scale(1.04);
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.4);
+}
+
+.sidebar-footer {
+  padding: 0 14px;
+}
+
+/* ==========================================================================
+   2. MAIN CONTENT STAGE (Right of Sidebar)
+   ========================================================================== */
+
+#main-stage {
+  margin-left: var(--sidebar-collapsed);
+  width: calc(100vw - var(--sidebar-collapsed));
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* Hide scrollbars for clean TV aesthetic */
+#main-stage::-webkit-scrollbar {
+  display: none;
+}
+#main-stage {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ==========================================================================
+   3. HERO SPOTLIGHT (Top 55% of the screen)
+   ========================================================================== */
+
+#hero-spotlight {
+  position: relative;
+  width: 100%;
+  height: 56vh;
+  min-height: 380px;
+  max-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px 52px 28px 52px;
+  overflow: hidden;
+}
+
+.hero-backdrop-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-backdrop-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transform: scale(1.02);
+  transition: opacity 0.5s ease, transform 6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+.hero-backdrop-img.visible {
+  opacity: 0.95;
+  transform: scale(1);
+}
+
+/* Hero Vignette Gradients for cinematic immersion */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to right, #0c1017 0%, rgba(12, 16, 23, 0.95) 28%, rgba(12, 16, 23, 0.6) 60%, rgba(12, 16, 23, 0.2) 85%, transparent 100%),
+    linear-gradient(to top, #0c1017 0%, rgba(12, 16, 23, 0.85) 20%, transparent 65%),
+    linear-gradient(to bottom, rgba(12, 16, 23, 0.7) 0%, transparent 25%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeInContent 0.35s ease;
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge-prime {
+  background: var(--accent-blue);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.badge-rating {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.badge-score {
+  background: rgba(255, 153, 0, 0.2);
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.hero-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero-metadata {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.hero-metadata .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.hero-description {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 580px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+/* Primary Action Buttons */
+.btn-hero {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.btn-hero svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.btn-hero-primary {
+  background-color: #ffffff;
+  color: #0c1017;
+}
+
+.btn-hero-secondary {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+}
+
+/* TV Focus State for Hero Buttons */
+.btn-hero:focus,
+.btn-hero.focused {
+  background-color: var(--accent-orange);
+  color: #0c1017;
+  border-color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: var(--focus-glow);
+}
+
+/* ==========================================================================
+   4. CONTENT ROWS & HORIZONTAL CAROUSELS
+   ========================================================================== */
+
+#content-feed {
+  position: relative;
+  z-index: 10;
+  padding: 10px 0 60px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.content-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 52px;
+  position: relative;
+}
+
+.row-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.row-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #f1f5f9;
+}
+
+.row-counter {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.carousel-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 12px 6px 16px 6px;
+  scroll-behavior: smooth;
+}
+
+.carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+.carousel-viewport {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Card Styling */
+.media-card {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background-color: var(--bg-surface);
+  border: 2px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.24s ease,
+              box-shadow 0.24s ease;
+  transform-origin: center center;
+}
+
+/* 16:9 Landscape Card (Continue Watching, Apps, Live) */
+.media-card.aspect-16-9 {
+  width: 250px;
+  height: 140px;
+}
+
+/* 2:3 Portrait Poster Card (Trending Movies & Series) */
+.media-card.aspect-2-3 {
+  width: 165px;
+  height: 248px;
+}
+
+.card-img-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #1e293b;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(12, 16, 23, 0.95) 100%);
+  pointer-events: none;
+}
+
+.card-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 2;
+}
+
+.card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-subtitle {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Continue Watching Progress Bar */
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 3;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent-orange);
+  box-shadow: 0 0 8px var(--accent-orange);
+}
+
+/* Live TV Badge */
+.live-badge-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 3;
+}
+
+.live-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: pulseAnimation 1.5s infinite;
+}
+
+@keyframes pulseAnimation {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+/* App Card styling */
+.app-card-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.app-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.app-card-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ==========================================================================
+   CRITICAL: TV REMOTE FOCUS STATE (scale 1.08 & Amazon Orange Glow)
+   ========================================================================== */
+
+.media-card:focus,
+.media-card.focused {
+  transform: scale(1.08);
+  border-color: var(--accent-orange);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 0 2px var(--accent-orange), var(--focus-glow);
+  z-index: 20;
+}
+
+.media-card:focus .card-img,
+.media-card.focused .card-img {
+  transform: scale(1.04);
+}
+
+.media-card:focus .card-title,
+.media-card.focused .card-title {
+  color: #ffffff;
+}
+
+.media-card:focus .progress-bar-fill,
+.media-card.focused .progress-bar-fill {
+  background: #ffffff;
+  box-shadow: 0 0 10px #ffffff;
+}
+
+/* ==========================================================================
+   5. VIDEO PLAYER OVERLAY / MODAL
+   ========================================================================== */
+
+#video-player-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: #000000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#video-player-modal.active {
+  display: block;
+  opacity: 1;
+}
+
+#html5-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.player-hud-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, transparent 20%, transparent 70%, rgba(0, 0, 0, 0.9) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 52px;
+  transition: opacity 0.4s ease;
+  pointer-events: auto;
+}
+
+.player-hud-overlay.hud-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.player-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-title-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-back-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.player-back-btn:focus,
+.player-back-btn.focused {
+  background: var(--accent-orange);
+  color: #0c1017;
+  border-color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: var(--focus-glow);
+}
+
+.player-video-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.player-video-subtitle {
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.player-controls-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.player-timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-time-display {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #cbd5e1;
+  min-width: 55px;
+}
+
+.player-scrubber-track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.player-scrubber-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-orange);
+  border-radius: 3px;
+  box-shadow: 0 0 10px var(--accent-orange);
+}
+
+.player-scrubber-thumb {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+.player-buttons-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.player-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.player-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.player-btn.btn-play-pause {
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  color: #0c1017;
+}
+
+.player-btn:focus,
+.player-btn.focused {
+  background: var(--accent-orange);
+  color: #0c1017;
+  border-color: #ffffff;
+  transform: scale(1.15);
+  box-shadow: var(--focus-glow);
+}
+
+/* ==========================================================================
+   6. SEARCH VIEW & MORE INFO MODAL
+   ========================================================================== */
+
+#search-overlay, #info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(12, 16, 23, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 40px 60px;
+}
+
+#search-overlay.active, #info-modal.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  height: 50px;
+  padding: 0 20px 0 50px;
+  border-radius: 25px;
+  background: #1e293b;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-family: inherit;
+  transition: var(--transition-smooth);
+}
+
+.search-input-wrapper input:focus,
+.search-input-wrapper input.focused {
+  border-color: var(--accent-orange);
+  box-shadow: var(--focus-glow);
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: var(--text-muted);
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+/* Toast Notice */
+#fire-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 2000;
+  background: rgba(20, 27, 38, 0.95);
+  border: 1px solid var(--accent-orange);
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: var(--transition-smooth);
+  pointer-events: none;
+}
+
+#fire-toast.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* D-Pad helper indicator on TV */
+.dpad-helper-tag {
+  position: fixed;
+  bottom: 12px;
+  left: 84px;
+  z-index: 90;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(12, 16, 23, 0.7);
+  padding: 4px 10px;
+  border-radius: 12px;
+  pointer-events: none;
+}
+.dpad-key {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-weight: 700;
+  color: #cbd5e1;
+}

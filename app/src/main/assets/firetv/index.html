@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Amazon Firestick OS - Smart TV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- 1. COLLAPSIBLE SIDEBAR NAVIGATION -->
+    <nav id="sidebar-nav" aria-label="Menú Principal Fire TV">
+      <div class="sidebar-top">
+        <div class="sidebar-logo">
+          <div class="firetv-logo-badge">
+            <!-- Fire Flame / Remote SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </div>
+          <span class="logo-text">fire<span>tv</span></span>
+        </div>
+      </div>
+
+      <ul class="nav-menu-list" id="nav-menu-list">
+        <!-- Rendered by app.js: Search, Home, Live, Movies, Series, Apps, Settings -->
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="nav-item-btn" id="btn-sidebar-profile" tabindex="0" data-nav="profile">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+          </div>
+          <span class="nav-label">Perfil TV</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 2. MAIN STAGE -->
+    <main id="main-stage">
+      <!-- HERO SPOTLIGHT (Top 55%) -->
+      <section id="hero-spotlight" aria-label="Contenido Destacado">
+        <div class="hero-backdrop-container">
+          <img id="hero-backdrop-img" class="hero-backdrop-img" src="" alt="Backdrop">
+          <div class="hero-gradient-overlay"></div>
+        </div>
+
+        <div class="hero-content" id="hero-content">
+          <div class="hero-badges-row" id="hero-badges-row">
+            <!-- Badges e.g. Prime, 4K UHD, HDR10+, Score -->
+          </div>
+          <h1 class="hero-title" id="hero-title">Cargando contenido...</h1>
+          <div class="hero-metadata" id="hero-metadata">
+            <!-- Year • Rating • Duration • Genre -->
+          </div>
+          <p class="hero-description" id="hero-description">
+            Explora las mejores películas, series y canales de televisión con la experiencia inteligente de Fire OS.
+          </p>
+          <div class="hero-actions" id="hero-actions">
+            <button class="btn-hero btn-hero-primary" id="hero-btn-play" tabindex="0" data-nav="hero-play">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <span>Reproducir</span>
+            </button>
+            <button class="btn-hero btn-hero-secondary" id="hero-btn-info" tabindex="0" data-nav="hero-info">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <span>Más Información</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT ROWS & CAROUSELS -->
+      <section id="content-feed" aria-label="Filas de contenido">
+        <!-- Rendered by app.js: Continue Watching, Apps, Trending, Live TV -->
+      </section>
+    </main>
+
+    <!-- 3. FULLSCREEN VIDEO PLAYER MODAL -->
+    <div id="video-player-modal" role="dialog" aria-modal="true" aria-label="Reproductor de Video">
+      <video id="html5-video-player" playsinline preload="auto"></video>
+      
+      <div class="player-hud-overlay" id="player-hud">
+        <!-- Player Top Bar -->
+        <div class="player-top-bar">
+          <div class="player-title-box">
+            <button class="player-back-btn" id="player-btn-back" tabindex="0" aria-label="Regresar">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            </button>
+            <div>
+              <h2 class="player-video-title" id="player-video-title">Título del Video</h2>
+              <span class="player-video-subtitle" id="player-video-subtitle">4K Ultra HD • Sonido 5.1</span>
+            </div>
+          </div>
+          <div class="badge-prime">FIRE TV LIVE</div>
+        </div>
+
+        <!-- Player Bottom Controls -->
+        <div class="player-controls-bottom">
+          <div class="player-timeline-row">
+            <span class="player-time-display" id="player-current-time">00:00</span>
+            <div class="player-scrubber-track" id="player-scrubber-track">
+              <div class="player-scrubber-fill" id="player-scrubber-fill" style="width: 0%"></div>
+              <div class="player-scrubber-thumb" id="player-scrubber-thumb" style="left: 0%"></div>
+            </div>
+            <span class="player-time-display" id="player-duration-time">00:00</span>
+          </div>
+
+          <div class="player-buttons-row">
+            <button class="player-btn" id="player-btn-rewind" tabindex="0" aria-label="Retroceder 10 segundos">
+              <svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+            </button>
+            <button class="player-btn btn-play-pause" id="player-btn-toggle-play" tabindex="0" aria-label="Reproducir o Pausar">
+              <svg id="player-icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="player-icon-pause" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button class="player-btn" id="player-btn-forward" tabindex="0" aria-label="Avanzar 10 segundos">
+              <svg viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. MORE INFO MODAL -->
+    <div id="info-modal" role="dialog" aria-modal="true" aria-label="Detalles de contenido">
+      <div style="max-width: 800px; margin: 40px auto; background: #141b26; border-radius: 12px; padding: 32px; border: 1px solid rgba(255,153,0,0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.85);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+          <div>
+            <h2 id="modal-info-title" style="font-size: 2rem; font-weight: 800; color: #fff;">Detalles</h2>
+            <p id="modal-info-tagline" style="color: var(--accent-orange); font-size: 1rem; margin-top: 4px;"></p>
+          </div>
+          <button id="modal-btn-close" class="player-back-btn" tabindex="0" aria-label="Cerrar modal">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+        <p id="modal-info-desc" style="color: #cbd5e1; line-height: 1.6; margin-bottom: 24px; font-size: 1.05rem;"></p>
+        <div style="display: flex; gap: 16px;">
+          <button class="btn-hero btn-hero-primary" id="modal-btn-play" tabindex="0">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <span>Reproducir Ahora</span>
+          </button>
+          <button class="btn-hero btn-hero-secondary" id="modal-btn-watchlist" tabindex="0">
+            <span>+ Agregar a Mi Lista</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. SEARCH OVERLAY -->
+    <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Búsqueda Fire TV">
+      <div class="search-header">
+        <button id="search-btn-back" class="player-back-btn" tabindex="0" aria-label="Cerrar búsqueda">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div class="search-input-wrapper">
+          <svg class="search-input-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input type="text" id="search-input" placeholder="Buscar películas, series, apps o géneros..." autocomplete="off">
+        </div>
+      </div>
+      <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text-secondary);">Resultados de búsqueda</h3>
+      <div class="search-results-grid" id="search-results-grid"></div>
+    </div>
+
+    <!-- 6. TOAST NOTIFICATION -->
+    <div id="fire-toast" role="status">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--accent-orange)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <span id="toast-message">Mensaje del sistema</span>
+    </div>
+
+    <!-- D-Pad guide helper -->
+    <div class="dpad-helper-tag">
+      <span>Control Remoto:</span>
+      <span class="dpad-key">▲ ▼ ◄ ►</span> Navegar
+      <span class="dpad-key">ENTER / OK</span> Seleccionar
+      <span class="dpad-key">ESC / BACK</span> Regresar
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
